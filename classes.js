@@ -28,7 +28,17 @@
 
   Call your class Employee and receive all the data in the constructor in the order listed above.
 */
-
+class Employee {
+  constructor(first_name, last_name, email, age){
+    this.first_name = first_name;
+    this.last_name = last_name;
+    this.email = email;
+    this.age = age;
+  }
+  makeWidget(){
+    return `${this.first_name} ${this.last_name} Widget`
+  }
+}
 //Code Here
 
 
@@ -46,7 +56,19 @@
 
   Call your new class Manager
 */
+class Manager extends Employee{
+  constructor(first_name, last_name, email, age){
+    super(first_name, last_name, email, age);
+    this.reports = [];
+  }
 
+  hire(employee){
+    this.reports.push(employee);
+  }
+  fire(index){
+    this.reports.splice(index, 1)
+  };
+}
 //Code Here
 
 
@@ -54,7 +76,8 @@
 
 /*
   Managers for Widget Co. get promoted when they get more employees, and get a bonus when they fire employees.
-  create a class ProgressiveManager that extends Manager.  A Progressive Manager has all of the same properties as a manager with the following additional properties:
+  create a class ProgressiveManager that extends Manager.  A Progressive Manager has all of the same properties as a manager with the following
+   additional properties:
     - title - default 'Not a manager'
     - bonus - default 0
 
@@ -70,6 +93,36 @@
 
   Call your new class ProgressiveManager
 */
+class ProgressiveManager extends Manager {
+  constructor(first_name, last_name, email, age, reports, title, bonus){
+    super(first_name, last_name, email, age, reports);
+    this.title = 'Not a manager';
+    this.bonus = 0
+  }
+  hire(employee) {
+    super.hire(employee);
+    this.updateTitle();
+  }
+  fire(index) {
+    super.fire(index);
+    this.updateTitle();
+    this.bonus += 100;
+  }
+  updateTitle (){
+    let length = this.reports.length;
+    if(length >= 1 && length <= 3)
+  {this.title = 'Barely Manager'}
+    else if (length >= 4 && length <= 10)
+    {this.title = 'Mostly Manager'}
+    else if (length >= 11 && length <= 50)
+    {this.title = "Manager"}
+    else if(length >= 51 && length <= 100)
+    {this.title = 'Manager Plus'}
+    else 
+    {this.title = 'Bestest Manager'}
+  }
+
+}
 
 //Code Here
 
@@ -97,6 +150,30 @@
         - This function returns an anonymous function that is called when the machine is done rebooting
         - The anonymous function should decrease wear_and_tear_count by 10, and set needs_reboot to false
 */
+class Machine{
+  constructor(){
+    this.widgets_made_count = 0;
+    this.wear_and_tear_count = 0;
+    this.needs_reboot = false
+  }
+
+  makeWidgets(num){
+    this.widgets_made_count += num
+    this.wear_and_tear_count = 0
+    for(let i=0; i < this.widgets_made_count; i += 50){
+      this.wear_and_tear_count ++;
+    }
+  }
+fixMachine(){
+  this.needs_reboot = true
+}
+reboot(){
+  return ()=> {
+    this.wear_and_tear_count -= 10
+    this.needs_reboot = false
+  }
+}
+}
 
 //Code Here
 
